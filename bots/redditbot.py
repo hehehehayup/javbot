@@ -5,7 +5,7 @@ import re
 import requests
 
 reddit = praw.Reddit(
-    user_agent="bibibobot",
+    user_agent="configreddit",
     client_id="hvytENVlQMoGTw",
     client_secret="61_QrgDy8ws96r1wk85GMuuXWjDN8A",
     username="Bibibobot",
@@ -149,11 +149,9 @@ def Main(args=None):
         subreddits = lines.read().split()
     subreddit_list = [reddit.subreddit(i) for i in subreddits]
     results = comment_crawler(subreddit_list)
-    if args[1] == 'posten':
+    if "posten" in args:
         post(results)
-        return None
-    else:
-        return results
+    return results
 
 
 if __name__ == "__main__":
