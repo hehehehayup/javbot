@@ -13,12 +13,15 @@ client = tweepy.Client(bearer_token=config.BEARER_TOKEN,
 
 
 def tweet():
-    codes_dict = redditbot.Main()
+    codes_dict = redditbot.Main(["posten"])
     codes = list(codes_dict.keys())
     for code in codes:
         website = 'https://www.javmost.com/' + code
         r = requests.get(website)
         if r.status_code != 404:
-            client.create_tweet(text=website)
+            try:
+                client.create_tweet(text=website)
+            except Exception:
+                print("duplicate")
 
 tweet()
