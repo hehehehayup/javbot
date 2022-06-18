@@ -145,7 +145,7 @@ def comment_crawler(subreddit_list):
 
 
 def Main(args=None):
-    with open('javbot/subreddits.txt') as lines:
+    with open('subreddits.txt') as lines:
         subreddits = lines.read().split()
     subreddit_list = [reddit.subreddit(i) for i in subreddits]
     results = comment_crawler(subreddit_list)
