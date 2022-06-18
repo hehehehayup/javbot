@@ -91,13 +91,13 @@ def code_cleaner(sauce_dirty):
     sauce_clean: list
     list of cleaned codes
     '''
-    not_allowed_chars = ".[]{}!$%&/()?*+#'"
-    sauce = list()
+    not_allowed_chars = ".][}{!$%&/)(?*+#'><|"
     sauce_clean = list()
     for i in sauce_dirty:
         txt = i.upper()
-        txt = txt.replace(' ','-')
-        txt = txt.replace(not_allowed_chars, '')
+        txt = txt.replace(' ', '-')
+        for char in not_allowed_chars:
+            txt = txt.replace(char, '')
         sauce_clean.append(txt)
     return sauce_clean
 
