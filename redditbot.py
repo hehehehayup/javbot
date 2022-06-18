@@ -3,6 +3,7 @@ import praw
 import re
 import requests
 
+
 reddit = praw.Reddit(
     user_agent="bibibobot",
     client_id="hvytENVlQMoGTw",
@@ -38,7 +39,8 @@ def post(subreddit_list):
         else:
             ausgabe = ausgabe + str(z) + ".: " + code +  " r/" + info_dict[code].subreddit.display_name + "\n \n" + link + "\n \n" + jav_link + "\n \n"
         z += 1
-    subreddit.submit(title=str(localtime), selftext=ausgabe)
+    #subreddit.submit(title=str(localtime), selftext=ausgabe)
+    print(ausgabe)
 
 
 def code_extraktion(potential_codes):
