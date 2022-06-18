@@ -3,7 +3,6 @@ import praw
 import re
 import requests
 
-
 reddit = praw.Reddit(
     user_agent="bibibobot",
     client_id="hvytENVlQMoGTw",
@@ -18,10 +17,9 @@ code_pattern = re.compile(r'((.|\s|^)([a-zA-Z]{3}|[a-zA-Z]{4}|[a-zA-Z]{5})-[0-9]
                           r'oO][mM] [0-9]{6}-[0-9]{3})')
 
 
-def post(subreddit_list):
+def post(info_dict):
     subreddit = reddit.subreddit("javbot")
     localtime = time.asctime(time.localtime(time.time()))
-    info_dict = comment_crawler(subreddit_list)
     ausgabe = ""
     # generiert ausgabe
     z = 1
@@ -35,11 +33,13 @@ def post(subreddit_list):
             link = "www.reddit.com/r/" + info_dict[code].subreddit.display_name + "/comments/" + info_dict[
                 code].submission.id + "/_/" + info_dict[code].id + "/"
         if r.status_code == 404:
-            ausgabe = ausgabe + str(z) + ".: " + code + " r/" + info_dict[code].subreddit.display_name + "\n \n" + link + "\n \n"
+            ausgabe = ausgabe + str(z) + ".: " + code + " r/" + info_dict[
+                code].subreddit.display_name + "\n \n" + link + "\n \n"
         else:
-            ausgabe = ausgabe + str(z) + ".: " + code +  " r/" + info_dict[code].subreddit.display_name + "\n \n" + link + "\n \n" + jav_link + "\n \n"
+            ausgabe = ausgabe + str(z) + ".: " + code + " r/" + info_dict[
+                code].subreddit.display_name + "\n \n" + link + "\n \n" + jav_link + "\n \n"
         z += 1
-    #subreddit.submit(title=str(localtime), selftext=ausgabe)
+    # subreddit.submit(title=str(localtime), selftext=ausgabe)
     print(ausgabe)
 
 
@@ -68,7 +68,7 @@ def code_cleaner(sauce_dirty):
         else:
             sauce.append(i.upper())
     for j in sauce:
-        sauce_clean.append(j.replace(' ','-'))
+        sauce_clean.append(j.replace(' ', '-'))
     return sauce_clean
 
 
@@ -96,8 +96,10 @@ def comment_crawler(subreddit_list):
     info_dict = process_comments(potential_codes)
     return info_dict
 
-process_list = list()
-sub_liste = ["Jav","javdreams","NSFW_Japan","JAVUncensored","AsianPorn","JapanesePorn2","xjav"]
-for x in sub_liste:
-    process_list.append(reddit.subreddit(x))
-post(process_list)
+
+def __main__():
+    with open('subreddits.txt') as lines:
+        subreddits = lines.read().split()
+    subreddit_list = [reddit.subreddit(i) for i in subreddits]
+    results = comment_crawler(subreddit_list)
+    post(results)
