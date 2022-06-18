@@ -1,1 +1,1 @@
-worker: python redditbot.py
+worker: python cd bots && python redditbot.py posten

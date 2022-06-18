@@ -1,3 +1,4 @@
+import sys
 import time
 import praw
 import re
@@ -18,6 +19,14 @@ code_pattern = re.compile(r'((.|\s|^)([a-zA-Z]{3}|[a-zA-Z]{4}|[a-zA-Z]{5})-[0-9]
 
 
 def post(info_dict):
+    '''
+    Generates a Reddit-conform comment containing all codes and their infomation
+
+    Parameters
+    ----------
+    info_dict: dict
+    dict of codes paired with the comment they were found in
+    '''
     subreddit = reddit.subreddit("javbot")
     localtime = time.asctime(time.localtime(time.time()))
     ausgabe = ""
@@ -44,7 +53,19 @@ def post(info_dict):
 
 
 def code_extraktion(potential_codes):
-    # extrahiert alle codes
+    '''
+    Extracts the raw codes from the string it has been found in
+
+    Parameters
+    ----------
+    potential_codes: list
+    list of potential codes
+
+    Returns
+    -------
+    sauce_dirty: list
+    list of actual codes
+    '''
     sauce_dirty = list()
     for i in potential_codes:
         if str(type(i)) == "<class 'praw.models.reddit.submission.Submission'>":
@@ -57,7 +78,19 @@ def code_extraktion(potential_codes):
 
 
 def code_cleaner(sauce_dirty):
-    # raeumt die codes auf
+    '''
+    Cleans up the codes
+
+    Parameters
+    ----------
+    sauce_dirty: list
+    list of dirty codes
+
+    Returns
+    -------
+    sauce_clean: list
+    list of cleaned codes
+    '''
     sauce = list()
     sauce_clean = list()
     for i in sauce_dirty:
@@ -80,6 +113,20 @@ def process_comments(potential_codes):
 
 
 def comment_crawler(subreddit_list):
+    """
+    Takes a list subreddits and iterates through top-of-day posts.
+    Posts are checked if they match a code-pattern and further cleaned up by code_extraktion code_cleaner and process_comments
+
+    Parameters
+    ----------
+    subreddit_list: list
+        list of subreddits
+
+    Returns
+    -------
+    info_dict:
+        a dictionary of JAV-codes paired with the comment they were found in
+    """
     potential_codes = list()
     # Iteriere durch Subreddit Liste, nimmt die Top-Posts fuer weitere Bearbeitung
     for curr_subreddit in subreddit_list:
@@ -97,9 +144,17 @@ def comment_crawler(subreddit_list):
     return info_dict
 
 
-def __main__():
-    with open('subreddits.txt') as lines:
+def Main(args=None):
+    with open(r'C:\Users\rener\PycharmProjects\javbot\subreddits.txt') as lines:
         subreddits = lines.read().split()
     subreddit_list = [reddit.subreddit(i) for i in subreddits]
     results = comment_crawler(subreddit_list)
-    post(results)
+    if args[1] == 'posten':
+        post(results)
+        return None
+    else:
+        return results
+
+
+if __name__ == "__main__":
+    Main(sys.argv)
