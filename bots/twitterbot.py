@@ -2,6 +2,7 @@ import requests
 import tweepy
 import config
 import redditbot
+import web_scraper
 
 client = tweepy.Client(bearer_token=config.BEARER_TOKEN,
                        consumer_key=config.API_KEY,
@@ -13,7 +14,7 @@ client = tweepy.Client(bearer_token=config.BEARER_TOKEN,
 
 
 def tweet():
-    codes_dict = redditbot.Main(["posten"])
+    codes_dict = redditbot.Main()
     codes = list(codes_dict.keys())
     for code in codes:
         website = 'https://www.javmost.com/' + code
@@ -23,5 +24,8 @@ def tweet():
                 client.create_tweet(text=website)
             except Exception:
                 print("duplicate")
+        else:
+            browser = web_scraper.init_browser()
+            browser.get("https://www.javlibrary.com/en/")
 
 tweet()
