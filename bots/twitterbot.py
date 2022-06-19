@@ -14,7 +14,7 @@ client = tweepy.Client(bearer_token=config.BEARER_TOKEN,
 
 
 def tweet():
-    codes_dict = redditbot.Main()
+    codes_dict = redditbot.Main(["posten"])
     codes = list(codes_dict.keys())
     for code in codes:
         website = 'https://www.javmost.com/' + code
@@ -24,9 +24,11 @@ def tweet():
                 client.create_tweet(text=website)
             except Exception:
                 print("duplicate")
+    print("Success Twitter")
+    '''
         else:
             browser = web_scraper.init_browser()
             browser.get("https://www.javlibrary.com/en/")
-
+    '''
 
 tweet()

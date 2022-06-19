@@ -147,6 +147,7 @@ def Main(args=None):
     results = comment_crawler(subreddit_list)
     if args is not None and "posten" in args:
         post(results)
+    print("Success Reddit")
     return results
 
 
