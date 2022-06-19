@@ -1,5 +1,6 @@
 import requests
 import tweepy
+from selenium.webdriver.common.by import By
 import config
 import redditbot
 import web_scraper
@@ -14,21 +15,33 @@ client = tweepy.Client(bearer_token=config.BEARER_TOKEN,
 
 
 def tweet():
+    '''
+    Browses Website for videos and tweets links of them
+    '''
     codes_dict = redditbot.Main(["posten"])
     codes = list(codes_dict.keys())
+    browser = web_scraper.init_browser()
+    browser.get("https://www.javlibrary.com/en/")
     for code in codes:
-        website = 'https://www.javmost.com/' + code
-        r = requests.get(website)
-        if r.status_code != 404:
-            try:
-                client.create_tweet(text=website)
-            except Exception:
-                print("duplicate")
+        if not 'www.javlibrary.com' in browser.current_url:
+            browser.close()
+        try:
+            warning = browser.find_element(By.XPATH, "//input[@type='button' and @value='I agree.']")
+            warning.click()
+        except Exception:
+            pass
+        search_box = browser.find_element(By.ID, 'idsearchbox')
+        search_box.send_keys(code)
+        search_box = browser.find_element(By.ID, 'idsearchbutton')
+        search_box.click()
+        try:
+            video = browser.find_element(By.XPATH, "//div[text()='" + code + "']")
+            video.click()
+        except Exception:
+            pass
+        url = browser.current_url
+        client.create_tweet(text=url)
     print("Success Twitter")
-    '''
-        else:
-            browser = web_scraper.init_browser()
-            browser.get("https://www.javlibrary.com/en/")
-    '''
 
-tweet()
+if __name__ == '__main__':
+    tweet()
