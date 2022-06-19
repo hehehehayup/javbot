@@ -18,7 +18,7 @@ def tweet():
     '''
     Browses Website for videos and tweets links of them
     '''
-    codes_dict = redditbot.Main(["posten"])
+    codes_dict = redditbot.Main()
     codes = list(codes_dict.keys())
     browser = web_scraper.init_browser()
     browser.get("https://www.javlibrary.com/en/")
@@ -29,16 +29,19 @@ def tweet():
             warning = browser.find_element(By.XPATH, "//input[@type='button' and @value='I agree.']")
             warning.click()
         except Exception:
-            pass
-        search_box = browser.find_element(By.ID, 'idsearchbox')
-        search_box.send_keys(code)
-        search_box = browser.find_element(By.ID, 'idsearchbutton')
-        search_box.click()
+            print("No Confirmation needed")
+        try:
+            search_box = browser.find_element(By.ID, 'idsearchbox')
+            search_box.send_keys(code)
+            search_box = browser.find_element(By.ID, 'idsearchbutton')
+            search_box.click()
+        except Exception:
+            print("No ID Searchbox")
         try:
             video = browser.find_element(By.XPATH, "//div[text()='" + code + "']")
             video.click()
         except Exception:
-            pass
+            print("Code directly after search")
         url = browser.current_url
         client.create_tweet(text=url)
     print("Success Twitter")
