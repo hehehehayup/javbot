@@ -20,9 +20,8 @@ def init_browser():
     options.add_argument("--no-sandbox")
     idk = os.environ.get("CHROMEDRIVER_PATH")
     service = Service(idk)
-    print(service)
     try:
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+        driver = webdriver.Chrome(service=service, options=options)
     except:
         print("Browser could be initialized")
     return driver
