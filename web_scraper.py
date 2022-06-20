@@ -18,6 +18,11 @@ def init_browser():
     options.add_argument("--headless")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--no-sandbox")
-    # service = Service(os.environ.get("CHROMEDRIVER_PATH"))
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    idk = os.environ.get("CHROMEDRIVER_PATH")
+    print(idk)
+    service = Service(idk)
+    try:
+        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    except:
+        print("Browser could be initialized")
     return driver
