@@ -23,6 +23,7 @@ def tweet():
     browser = web_scraper.init_browser()
     if browser is not None:
         browser.get("https://www.javlibrary.com/en/")
+        print(browser.page_source)
         try:
             warning = browser.find_element(By.XPATH, "//input[@type='button' and @value='I agree.']")
             warning.click()
