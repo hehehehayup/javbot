@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 import config
 import redditbot
 import web_scraper
+import time
 
 client = tweepy.Client(bearer_token=config.BEARER_TOKEN,
                        consumer_key=config.API_KEY,
@@ -23,6 +24,7 @@ def tweet():
     browser = web_scraper.init_browser()
     if browser is not None:
         browser.get("https://www.javlibrary.com/en/")
+        time.sleep(2)
         print(browser.page_source)
         try:
             warning = browser.find_element(By.XPATH, "//input[@type='button' and @value='I agree.']")
