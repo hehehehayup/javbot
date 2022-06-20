@@ -11,17 +11,18 @@ def init_browser():
 
     Returns
     -------
-    drive: webdriver.chrome
+    driver: webdriver.chrome
     '''
     options = Options()
     options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
     options.add_argument("--headless")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--no-sandbox")
-    idk = os.environ.get("CHROMEDRIVER_PATH")
-    service = Service(idk)
+    chrome_path = os.environ.get("CHROMEDRIVER_PATH")
+    service = Service(chrome_path)
     try:
         driver = webdriver.Chrome(service=service, options=options)
     except:
-        print("Browser could be initialized")
+        print("Browser could not be initialized")
+        driver = None
     return driver

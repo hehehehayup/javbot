@@ -21,32 +21,33 @@ def tweet():
     codes_dict = redditbot.Main(["posten"])
     codes = list(codes_dict.keys())
     browser = web_scraper.init_browser()
-    browser.get("https://www.javlibrary.com/en/")
-    for code in codes:
-        if not 'www.javlibrary.com' in browser.current_url:
-            browser.close()
+    if browser is not None:
+        browser.get("https://www.javlibrary.com/en/")
         try:
             warning = browser.find_element(By.XPATH, "//input[@type='button' and @value='I agree.']")
             warning.click()
         except:
             print("No Confirmation needed")
-        try:
-            search_box = browser.find_element(By.ID, 'idsearchbox')
-            search_box.send_keys(code)
-            search_box = browser.find_element(By.ID, 'idsearchbutton')
-            search_box.click()
-        except:
-            print("No ID Searchbox")
-        try:
-            video = browser.find_element(By.XPATH, "//div[text()='" + code + "']")
-            video.click()
-        except:
-            print("Code directly after search")
-        try:
-            url = browser.current_url
-            client.create_tweet(text=url)
-        except:
-            print("No Tweet")
+        for code in codes:
+            if not 'www.javlibrary.com' in browser.current_url:
+                browser.close()
+            try:
+                search_box = browser.find_element(By.ID, 'idsearchbox')
+                search_box.send_keys(code)
+                search_box = browser.find_element(By.ID, 'idsearchbutton')
+                search_box.click()
+            except:
+                print("No ID Searchbox")
+            try:
+                video = browser.find_element(By.XPATH, "//div[text()='" + code + "']")
+                video.click()
+            except:
+                print("Code directly after search")
+            try:
+                url = browser.current_url
+                client.create_tweet(text=url)
+            except:
+                print("No Tweet")
 
     print("Success Twitter")
 
