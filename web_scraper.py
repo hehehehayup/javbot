@@ -19,8 +19,8 @@ def init_browser():
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--no-sandbox")
     idk = os.environ.get("CHROMEDRIVER_PATH")
-    print(idk)
     service = Service(idk)
+    print(service)
     try:
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     except:
