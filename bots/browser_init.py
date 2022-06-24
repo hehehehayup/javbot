@@ -24,9 +24,10 @@ def init_browser():
         driver = webdriver.Chrome(service=service, options=options)
     except:
         print("Heroku driver not initialized")
-        try:
+        '''try:
             driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
         except:
-            print("Local driver not initilized")
-            driver = None
+            print("Local driver not initialized")
+            '''
+        driver = None
     return driver
