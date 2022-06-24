@@ -18,16 +18,17 @@ def init_browser():
     options.add_argument("--headless")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--no-sandbox")
-    chrome_path = os.environ.get("CHROMEDRIVER_PATH")
-    service = Service(chrome_path)
-    try:
+    #chrome_path = os.environ.get("CHROMEDRIVER_PATH")
+    #service = Service(chrome_path)
+    service = Service(executable_path=str(os.environ.get('CHROMEDRIVER_PATH')))
+    driver = webdriver.Chrome(service=service, options=options)
+    '''try:
         driver = webdriver.Chrome(service=service, options=options)
     except:
         print("Heroku driver not initialized")
-        '''try:
+        try:
             driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
         except:
             print("Local driver not initialized")
-            '''
-        driver = None
+            driver = None'''
     return driver
