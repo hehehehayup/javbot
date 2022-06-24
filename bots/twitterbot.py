@@ -29,7 +29,7 @@ def tweet(args=None):
             warning.click()
         except:
             print("No Confirmation needed")
-        print(browser.current_url)
+        print(browser.page_source)
         for code in codes:
             if not 'www.javlibrary.com' in browser.current_url:
                 browser.close()
