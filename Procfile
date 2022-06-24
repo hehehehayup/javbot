@@ -1,1 +1,1 @@
-worker: cd \bots && python twitterbot.py
+worker: cd \bots && python twitterbot.py "posten"
