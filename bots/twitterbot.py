@@ -3,8 +3,8 @@ import tweepy
 from selenium.webdriver.common.by import By
 import config
 import redditbot
-import web_scraper
-import time
+import browser_init
+import sys
 
 client = tweepy.Client(bearer_token=config.BEARER_TOKEN,
                        consumer_key=config.API_KEY,
@@ -15,17 +15,15 @@ client = tweepy.Client(bearer_token=config.BEARER_TOKEN,
                        wait_on_rate_limit=True)
 
 
-def tweet():
+def tweet(args=None):
     '''
     Browses Website for videos and tweets links of them
     '''
-    codes_dict = redditbot.Main(["posten"])
+    codes_dict = redditbot.Main(args)
     codes = list(codes_dict.keys())
-    browser = web_scraper.init_browser()
+    browser = browser_init.init_browser()
     if browser is not None:
         browser.get("https://www.javlibrary.com/en/")
-        time.sleep(2)
-        print(browser.page_source)
         try:
             warning = browser.find_element(By.XPATH, "//input[@type='button' and @value='I agree.']")
             warning.click()
@@ -49,10 +47,10 @@ def tweet():
             try:
                 url = browser.current_url
                 client.create_tweet(text=url)
+                print("tweet")
             except:
                 print("No Tweet")
-
     print("Success Twitter")
 
 if __name__ == '__main__':
-    tweet()
+    tweet(sys.argv)
