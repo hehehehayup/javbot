@@ -145,7 +145,7 @@ def Main(args=None):
         subreddits = lines.read().split()
     subreddit_list = [reddit.subreddit(i) for i in subreddits]
     results = comment_crawler(subreddit_list)
-    if args is not None and "posten" in args:
+    if args is not None and "preddit" in args:
         post(results)
     print("Success Reddit")
     return results
